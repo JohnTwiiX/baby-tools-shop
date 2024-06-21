@@ -20,7 +20,8 @@ sudo install docker.io
 # create a Dockerfile without ending
 # use touch, nano or vim
 nano Dockerfile
-
+```
+```bash
 # the file  should look like this
 FROM python:3.9-slim
 
@@ -40,7 +41,8 @@ python manage.py migrate
 
 # Start django
 ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
-
+```
+```bash
 # create image
 # docker search Dockerfile alone in current project
 docker build -t babyshop .
