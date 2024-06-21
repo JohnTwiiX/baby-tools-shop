@@ -46,29 +46,30 @@ ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
 # create image
 # docker search Dockerfile alone in current project
 docker build -t babyshop .
-```
-- hints for images
-```bash
+
 # create
-docker build -t <name-of-image>
+docker build -t <image-name>
 
 # shows all
 docker images
 
 # delete one or more
-docker image rm -f <name-of-image>
+docker image rm -f <image-name>
 ```
 
 3. create volume for save datas
 ```bash
-# create
+# create volume
 docker volume create babyshop_data
+
+# create
+docker volume create <volume-name>
 
 # shows all
 docker volume ls
 
 # delete one ore more
-docker volume rm <name-of-volume>
+docker volume rm <volume-name>
 ```
 
 4. build a docker container
