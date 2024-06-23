@@ -8,7 +8,7 @@
 
 ### Docker configuration
 
-1. install Docker
+1. if Docker is not yet installed
 ```bash
 sudo apt update
 sudo apt upgrade
@@ -32,12 +32,13 @@ COPY . $WORKDIR
 
 # Install reqirements
 RUN pip install --upgrade pip && \
-pip install Django==4.0.2 gunicorn==20.1.0 Pillow
+    pip install -r requirements.txt
 
 WORKDIR /app/babyshop_app
 
 RUN python manage.py makemigrations && \
-python manage.py migrate
+    python manage.py migrate
+    python manage.py collectstatic
 
 # Start django
 ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
@@ -48,7 +49,7 @@ ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
 docker build -t babyshop .
 
 # create
-docker build -t <image-name> <where>
+docker build -t <image-name> <wherever>
 
 # shows all
 docker images
@@ -72,9 +73,9 @@ docker volume ls
 docker volume rm <volume-name>
 ```
 
-4. build a docker container
+4. start a docker container
 ```bash
-# build and run container with image and a volume
+# run container with image and a volume
 docker run -d --name babyshop \
     -p 8025:8000 \
     -v babyshop_data:/app/babyshop_app \
