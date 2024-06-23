@@ -48,7 +48,7 @@ ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
 docker build -t babyshop .
 
 # create
-docker build -t <image-name>
+docker build -t <image-name> <where>
 
 # shows all
 docker images
@@ -78,7 +78,7 @@ docker volume rm <volume-name>
 docker run -d --name babyshop \
     -p 8025:8000 \
     -v babyshop_data:/app/babyshop_app \
-    --restart always \
+    --restart on-failure \
     babyshop
 
 # -d Run container in background and print container ID
@@ -98,6 +98,21 @@ docker run -d --name babyshop \
 ```bash
 <server-ip>:<port>
 ```
+
+6. create superuser in container
+```bash
+# find the container id
+docker ps -a
+
+# connect to your running container
+docker exec -it <container-id> python manage.py createsuperuser
+
+# then create your super user with
+# username
+# email (can be empty)
+# password
+```
+
 ### Hints
 
 This section will cover some hot tips when trying to interacting with this repository:
