@@ -18,7 +18,7 @@ sudo install docker.io
 2. create a docker image
 ```bash
 # create a Dockerfile without ending
-# use touch, nano or vim
+# use touch, nano, or vim
 nano Dockerfile
 ```
 ```bash
@@ -27,10 +27,10 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# copy the directiory
+# copy the directory
 COPY . $WORKDIR
 
-# Install reqirements
+# Install requirements
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
@@ -45,20 +45,24 @@ ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
 ```
 ```bash
 # create image
-# docker search Dockerfile alone in current project
+# docker search Dockerfile alone in the current project
 docker build -t babyshop .
 
 # create
 docker build -t <image-name> <wherever>
+
+# -t Name and optionally a tag in the <image-name>:<image-tag> format
 
 # shows all
 docker images
 
 # delete one or more
 docker image rm -f <image-name>
+
+# -f Force removal of the image
 ```
 
-3. create volume for save datas
+3. create volume for saving data
 ```bash
 # create volume
 docker volume create babyshop_data
@@ -69,13 +73,13 @@ docker volume create <volume-name>
 # shows all
 docker volume ls
 
-# delete one ore more
+# delete one or more
 docker volume rm <volume-name>
 ```
 
 4. start a docker container
 ```bash
-# run container with image and a volume
+# run the container with an image and a volume
 docker run -d --name babyshop \
     -p 8025:8000 \
     -v babyshop_data:/app/babyshop_app \
@@ -90,17 +94,17 @@ docker run -d --name babyshop \
 
 # -v <volume-name>:/path/to/storage
 
-# --restart to restart the container if fails
+# --restart to restart the container if it fails
 
-# babyshop ist the created image
+# babyshop is the created image
 ```
 
-5. now you can see it in browser
+5. now you can see it in the browser
 ```bash
 <server-ip>:<port>
 ```
 
-6. create superuser in container
+6. create a superuser in the container
 ```bash
 # find the container id
 docker ps -a
@@ -108,7 +112,7 @@ docker ps -a
 # connect to your running container
 docker exec -it <container-id> python manage.py createsuperuser
 
-# then create your super user with
+# then create your superuser with
 # username
 # email (can be empty)
 # password
@@ -116,7 +120,7 @@ docker exec -it <container-id> python manage.py createsuperuser
 
 ### Hints
 
-This section will cover some hot tips when trying to interacting with this repository:
+This section will cover some hot tips when trying to interact with this repository:
 
 - Settings & Configuration for Django can be found in `babyshop_app/babyshop/settings.py`
 - Routing: Routing information, such as available routes can be found from any `urls.py` file in `babyshop_app` and corresponding subdirectories
