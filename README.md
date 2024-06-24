@@ -37,7 +37,7 @@ RUN pip install --upgrade pip && \
 WORKDIR /app/babyshop_app
 
 RUN python manage.py makemigrations && \
-    python manage.py migrate
+    python manage.py migrate && \
     python manage.py collectstatic
 
 # Start django
@@ -50,7 +50,6 @@ docker build -t babyshop .
 
 # create
 docker build -t <image-name> <wherever>
-
 # -t Name and optionally a tag in the <image-name>:<image-tag> format
 
 # shows all
@@ -58,14 +57,13 @@ docker images
 
 # delete one or more
 docker image rm -f <image-name>
-
 # -f Force removal of the image
 ```
 
 3. create volume for saving data
 ```bash
 # create volume
-docker volume create babyshop_data
+docker volume create babyshop_db
 
 # create
 docker volume create <volume-name>
@@ -82,7 +80,9 @@ docker volume rm <volume-name>
 # run the container with an image and a volume
 docker run -d --name babyshop \
     -p 8025:8000 \
-    -v babyshop_data:/app/babyshop_app \
+    -v babyshop_db:/app/babyshop_app/db.sqlite3 \
+    -v babyshop_media:/app/babyshop_app/media \
+    -v babyshop_static:/app/babyshop_app/static \
     --restart on-failure \
     babyshop
 
@@ -92,7 +92,7 @@ docker run -d --name babyshop \
 
 # -p <server-port>:<container-port> server-port redirect to docker-port
 
-# -v <volume-name>:/path/to/storage
+# -v <volume-name>:/path/to/storage 
 
 # --restart to restart the container if it fails
 
