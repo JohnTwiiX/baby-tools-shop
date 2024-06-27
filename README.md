@@ -44,7 +44,10 @@ RUN python manage.py makemigrations && \
 ARG DJANGO_SUPERUSER_USERNAME
 ARG DJANGO_SUPERUSER_EMAIL
 ARG DJANGO_SUPERUSER_PASSWORD
-RUN python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL --password $DJANGO_SUPERUSER_PASSWORD
+RUN python manage.py createsuperuser --noinput \
+    --username $DJANGO_SUPERUSER_USERNAME \
+    --email $DJANGO_SUPERUSER_EMAIL \
+    --password $DJANGO_SUPERUSER_PASSWORD
 
 # Start Django
 ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
@@ -52,7 +55,11 @@ ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
 ```bash
 # create image
 # docker search Dockerfile alone in the current project
-docker build --build-arg DJANGO_SUPERUSER_USERNAME=<your-username> --build-arg DJANGO_SUPERUSER_EMAIL=<your-username> --build-arg DJANGO_SUPERUSER_PASSWORD=<your-password> -t babyshop:<your-tag> .
+docker build
+    --build-arg DJANGO_SUPERUSER_USERNAME=<your-username> \
+    --build-arg DJANGO_SUPERUSER_EMAIL=<your-username> \
+    --build-arg DJANGO_SUPERUSER_PASSWORD=<your-password> \
+    -t babyshop:<your-tag> .
 
 # create
 docker build -t <image-name> <wherever>
