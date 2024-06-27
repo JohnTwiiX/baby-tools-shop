@@ -2,18 +2,25 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# copy the directiory
+# Copy the directory
 COPY . $WORKDIR
 
-# Install reqirements
+# Install requirements
 RUN pip install --upgrade pip && \
-    pip install -r requirements.txt 
+    pip install -r requirements.txt
 
 WORKDIR /app/babyshop_app
 
-RUN python manage.py makemigrations && \ 
+# Run migrations and collect static files
+RUN python manage.py makemigrations && \
     python manage.py migrate && \
-    python manage.py collectstatic
+    python manage.py collectstatic --noinput
 
-# Start django
+# Create a superuser using environment variables
+ARG DJANGO_SUPERUSER_USERNAME
+ARG DJANGO_SUPERUSER_EMAIL
+ARG DJANGO_SUPERUSER_PASSWORD
+RUN python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL --password $DJANGO_SUPERUSER_PASSWORD
+
+# Start Django
 ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "babyshop.wsgi:application"]
