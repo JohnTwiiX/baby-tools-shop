@@ -90,7 +90,7 @@ docker run -d --name babyshop \
     -v babyshop_media:/app/babyshop_app/media \
     -v babyshop_static:/app/babyshop_app/static \
     --restart on-failure \
-    babyshop
+    babyshop:<your-tag>
 
 # -d Run container in background and print container ID
 
@@ -116,12 +116,12 @@ docker run -d --name babyshop \
 docker ps -a
 
 # connect to your running container
-docker exec -it <container-id> python manage.py createsuperuser
+docker exec -it <container-id> bash
 
-# then create your superuser with
-# username
-# email (can be empty)
-# password
+# docker exec    - that allows you to run a new command in a running container
+# -it            - allows you to interact with the command-line interface as if you were connected directly to it
+# <container-id> - container you want to interact with
+# bash           - want to run inside the container
 ```
 
 ### Hints
